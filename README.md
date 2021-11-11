@@ -18,3 +18,47 @@ This algorithm works fine for _non-symmetrical_ ranges, but for _symmetrical_ on
 to the median value (because median in scope of this implemetation is the **fixed point**).
 
 ![Example showing distribution to the median](./img/disadvantage-screenshot.png)
+
+How to use
+==========
+
+1. Ensure you have **Python 3.9** version and installed **pipenv**.
+2. Set the `PIPENV_VENV_IN_PROJECT` variable to `1` in your terminal:
+   - if you are on UNIX-like system:
+
+       ```
+       export PIPENV_VENV_IN_PROJECT=1
+        ```
+   - if you are on Windows:
+       - on PowerShell: 
+        
+           ```
+             $PIPENV_VENV_IN_PROJECT = 1
+         ```
+         
+       - on CMD: 
+       
+           ```
+           set PIPENV_VENV_IN_PROJECT=1
+           ```
+         
+3. Clone the repository and proceed to project root dir:
+    ```
+    git clone https://github.com/dkostmii/raisedCosine.git
+    cd ./raisedCosine
+    ```
+4. Enter to the environment of project: 
+    ```
+    pipenv shell
+    ```
+5. Install dependencies:
+    ```
+    pipenv install
+    ```
+6. If you want to, you can open the project in **PyCharm** and run it.
+    
+    \
+    Otherwise you run project by:
+    ```
+    python main.py
+    ```
