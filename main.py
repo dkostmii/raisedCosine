@@ -33,12 +33,12 @@ def median_modify(y):
         # there is no median, so take the average
         first_middle = y[int(y.shape[0] / 2) - 1]
         second_middle = y[int(y.shape[0] / 2)]
-        average = (first_middle + second_middle) / 2
+        avg = (first_middle + second_middle) / 2
 
         first_chunk = y[:int(y.shape[0] / 2)]
         second_chunk = y[int(y.shape[0] / 2):]
 
-        modified = concatenate([first_chunk, [average], second_chunk])
+        modified = concatenate([first_chunk, [avg], second_chunk])
     else:
         # there is median, so duplicate it
         median = y[int(floor(y.shape[0] / 2))]
@@ -57,8 +57,8 @@ def neighbour_average(y):
     shifted_y = take(y, arange(y.shape[0])[:-1])
     shifted_rolled = take(rolled, arange(rolled.shape[0])[:-1])
 
-    average = (shifted_y + shifted_rolled) / 2
-    return average
+    avg = (shifted_y + shifted_rolled) / 2
+    return avg
 
 
 # takes a - initial state, tt - time range
@@ -78,33 +78,14 @@ def sinct_boundary(t, amplitude, f, tt):
     # normalize the function values
     avg = average(values)
 
-    print(str(avg))
     y = amplitude * (values - avg)
     result = indentity_boundary(y, tt)
     # return both the result and the average term to compensate normalization
-    return (result, avg)
+    return result, avg
 
 
 def samplingfrequency(val_range, samples):
     return samples / val_range
-
-'''
-def plot2d(samples, start, end, freq):
-    sampling_freq = samplingfrequency(end - start, samples)
-    domain_freq = freq
-    amplitude = 1.2
-
-    x = linspace(start, end, samples)
-
-    print("Sampling frequency: " + str(sampling_freq))
-
-    fun = (lambda t: amplitude * sinct(t, domain_freq))
-
-    pyplot.plot(x, list(map(fun, x)))
-
-    # pyplot.axhline(y=amplitude, color='r', linestyle='-')
-    pyplot.show()
-'''
 
 
 def plot_distribution(samples, start, end, freq):
@@ -114,9 +95,9 @@ def plot_distribution(samples, start, end, freq):
 
     tt_end = 1
 
-    alpha = 0.1
+    alpha = 0.01
 
-    if (tt_end < 0):
+    if tt_end < 0:
         raise Exception("tt_end must be positive")
 
     a = linspace(start, end, samples)
@@ -154,37 +135,12 @@ def plot_distribution(samples, start, end, freq):
     pyplot.show()
 
 
-'''
-def plot3d(samples, start, end, freq):
-    sampling_freq = samplingfrequency(end - start, samples)
-    domain_freq = freq
-    amplitude = 4
-
-    a = linspace(start, end, samples)
-    b = linspace(start, end, samples)
-
-    x, y = meshgrid(a, b)
-
-    z = amplitude * sinct(x, domain_freq) * sinct(y, domain_freq)
-
-    print("Sampling frequency: " + str(sampling_freq))
-
-    fig = pyplot.figure(figsize=(6, 6))
-    ax = fig.add_subplot(projection='3d')
-    ax.set_xlim3d(start, end)
-    ax.set_ylim3d(start, end)
-
-    ax.plot_wireframe(x, y, z)
-    pyplot.show()
-'''
-
-
 def main():
-    samples = 10
-    start = -4
-    end = 0
+    samples = 40
+    start = -2
+    end = 2
 
-    plot_distribution(samples, start, end, 1)
+    plot_distribution(samples, start, end, 2)
 
 
 if __name__ == "__main__":
