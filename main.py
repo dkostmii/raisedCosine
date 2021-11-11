@@ -10,6 +10,7 @@ from numpy import concatenate
 from numpy import take
 from numpy import roll
 from numpy import arange
+from numpy import average
 
 # functions
 from numpy import sinc
@@ -73,9 +74,15 @@ def indentity_boundary(a, tt):
 
 # applies sinct to initial state and returns it's progression
 def sinct_boundary(t, amplitude, f, tt):
-    y = amplitude * sinct(t, f)
+    values = sinct(t, f)
+    # normalize the function values
+    avg = average(values)
+
+    print(str(avg))
+    y = amplitude * (values - avg)
     result = indentity_boundary(y, tt)
-    return result
+    # return both the result and the average term to compensate normalization
+    return (result, avg)
 
 
 def samplingfrequency(val_range, samples):
@@ -103,9 +110,11 @@ def plot2d(samples, start, end, freq):
 def plot_distribution(samples, start, end, freq):
     sampling_freq = samplingfrequency(end - start, samples)
     domain_freq = freq
-    amplitude = 1
+    amplitude = 2
 
-    tt_end = 2
+    tt_end = 1
+
+    alpha = 0.1
 
     if (tt_end < 0):
         raise Exception("tt_end must be positive")
@@ -116,18 +125,26 @@ def plot_distribution(samples, start, end, freq):
 
     x, y = meshgrid(a, tt)
 
-    zb = sinct_boundary(a, amplitude, domain_freq, tt)
-    z = fun(x) * exp(-y)
+    # sinct_boundary normalizes the function by average value
+    funb, avg = sinct_boundary(a, amplitude, domain_freq, tt)
+    # so we need to add that term to final result
+    zb = funb * exp(-alpha * ((2 * pi * domain_freq) ** 2) * y) + avg
+
+    # simple exponent distribution
+    z = fun(x) * exp(-alpha * y)
 
     print("Sampling frequency: " + str(sampling_freq))
 
     fig = pyplot.figure(figsize=(6, 6))
+
+    # full solution plot
     ax = fig.add_subplot(1, 2, 1, projection='3d')
     ax.set_xlim3d(start, end)
     ax.set_ylim3d(0, tt_end)
 
     ax.plot_wireframe(x, y, zb, color='red')
 
+    # simple exponent distribution plot
     ax = fig.add_subplot(1, 2, 2, projection='3d')
     ax.set_xlim3d(start, end)
     ax.set_ylim3d(0, tt_end)
@@ -163,11 +180,11 @@ def plot3d(samples, start, end, freq):
 
 
 def main():
-    samples = 40
-    start = -5
-    end = 2
+    samples = 10
+    start = -4
+    end = 0
 
-    plot_distribution(samples, start, end, 2)
+    plot_distribution(samples, start, end, 1)
 
 
 if __name__ == "__main__":
