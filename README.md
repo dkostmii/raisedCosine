@@ -17,7 +17,18 @@ and this inspired me to plot the graph of function value distribution through ti
 This algorithm works fine for _non-symmetrical_ ranges, but for _symmetrical_ one it's just distributing straight
 to the median value (because median in scope of this implemetation is the **fixed point**).
 
-![Example showing distribution to the median](./img/disadvantage-screenshot.png)
+![Example showing distribution to the median of symmetrical range](./img/disadvantage-screenshot.png)
+
+**Update**: After normalizing the function values, the algorithm works fine both for symmetrical and non-symmetrical ranges
+(in math **even** and **odd** functions).
+
+Also added angular velocity squared to the exponent term: `zb = funb * exp(-alpha * ((2 * pi * domain_freq) ** 2) * y) + avg`
+
+![Example showing distribution for symmetrical range](./img/disadvantage-update-screenshot.png)
+
+![Example showing distribution for non-symmetrical range](./img/disadvantage-update-screenshot-01.png)
+
+As you can see, resulting distribution fits in a shorter time, than a simple exponent distribution.
 
 How to use
 ==========
